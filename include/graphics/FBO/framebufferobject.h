@@ -1,24 +1,23 @@
-#include<graphics/common.h>
+#include <graphics/common.h>
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
-namespace graphics{
+namespace graphics {
 class Framebufferobject {
-public:
-	virtual void initialize(size_t width, size_t height );
+ public:
+  virtual void initialize(size_t width, size_t height);
 
-	virtual void prepare();
-	
-	virtual void use();
+  virtual void prepare();
 
-	virtual void detach();
+  virtual void use();
 
-private:
+  virtual void detach();
 
-protected:
-	GLuint fbo;
-	size_t width;
-	size_t height;
+ private:
+ protected:
+  GLuint fbo;
+  size_t width;
+  size_t height;
 };
-}
+}  // namespace graphics
 
-#endif 
+#endif

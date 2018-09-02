@@ -3,26 +3,16 @@
 namespace graphics {
 void Framebufferobject::initialize(size_t width, size_t height) {
 #ifdef _DEBUG
-	std::cout << "framebuffer has initialized!" << std::endl;
+  std::cout << "framebuffer has initialized!" << std::endl;
 #endif
-	this->width = width;
-	this->height = height;
-
+  this->width = width;
+  this->height = height;
 }
 
+void Framebufferobject::prepare() {}
 
-void Framebufferobject::prepare() {
+void Framebufferobject::use() { glBindFramebuffer(GL_FRAMEBUFFER, fbo); }
 
-}
+void Framebufferobject::detach() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
 
-void Framebufferobject::use() {
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-}
-
-
-void Framebufferobject::detach() {
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-}
-
+}  // namespace graphics
