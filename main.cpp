@@ -9,7 +9,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -36,10 +35,8 @@ int main(int argc, char *argv) {
   graphics::ShaderManger vanilla_shader;
   prender->set_camera(
       new graphics::Camera(vmath::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.200));
-  vanilla_shader.setVSFile(
-      "C:/Users/wxy/source/repos/3DS/3DS/resources/shaders/vanilla/vanilla.vs");
-  vanilla_shader.setFSFile(
-      "C:/Users/wxy/source/repos/3DS/3DS/resources/shaders/vanilla/vanilla.fs");
+  vanilla_shader.setVSFile("./resources/shaders/vanilla/vanilla.vs");
+  vanilla_shader.setFSFile("./resources/shaders/vanilla/vanilla.fs");
   vanilla_shader.setup();
   vanilla_shader.use();
 
@@ -47,17 +44,18 @@ int main(int argc, char *argv) {
   vanilla_shader.send1i("normal_texture", NORMAL_TEXTURE_UNIT_INDEX);
   // graphics::Model
   // canvas(std::string("D:/proj/ogldev-source/Content/quad.obj"));
-  // graphics::Model
-  // canvas(std::string("D:/proj/ogldev-source/Content/tex/nanosuit2.obj"));
+  graphics::Model canvas(std::string("./Content/tex/nanosuit2.obj"));
   // graphics::Model canvas(std::string("D:/Program Files/English PmxEditor
   // x64/models/Konpaku Youmu (Short Skirt)/Konpaku Youmu 2.00 (little
   // skirt).obj"));
-  graphics::Model canvas(
-      std::string("D:/proj/ogldev-source/Content/boblampclean.md5mesh"));
+  // graphics::Model canvas(
+  //  std::string("./Content/boblampclean.md5mesh"));
   try {
     canvas.Init();
   } catch (std::exception &e) {
     cout << e.what() << endl;
+    system("pause");
+    abort();
   }
   gbook["render"] = int(&canvas);
 
@@ -77,6 +75,7 @@ int main(int argc, char *argv) {
   global_store("ptrCamera", *ptrCamera.get());
   global_timestart = std::chrono::high_resolution_clock::now();
   prender->render([]() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     auto start = std::chrono::high_resolution_clock::now();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -91,13 +90,13 @@ int main(int argc, char *argv) {
         (graphics::VanillaFramebufferobject *)gbook["fbo"];
     //	pfbo->use();
     pcanvas->Render();
-    pfbo->detach();
+    // pfbo->detach();
     vector<aiMatrix4x4> transforms;
 
     auto global_time_pass =
         std::chrono::high_resolution_clock::now() - global_timestart;
     float seconds_time_pass = (float)global_time_pass.count() / 1000;
-    pcanvas->BoneTransform(seconds_time_pass, transforms);
+    // pcanvas->BoneTransform(seconds_time_pass, transforms);
 
     cout << global_time_pass.count() << endl;
     Sleep(10);
